@@ -1,17 +1,30 @@
-import { View, Text, Image } from "react-native";
-import React from "react";
+import { View, Text, Image, Pressable } from "react-native";
+import React, { useState } from "react";
 import { GenreDetails, ResponseDetail } from "./common";
+import { Stack } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
 
 interface DetailMoviesProps {
   detail: ResponseDetail;
+  tekan: boolean;
+  setTekan: (tekan: boolean) => void;
+  mutate: (numberFilm: number) => Promise<any>;
 }
 
-const DetailMovies = ({ detail }: DetailMoviesProps) => {
+const DetailMovies = ({
+  detail,
+  tekan,
+  setTekan,
+  mutate,
+}: DetailMoviesProps) => {
+  console.log(detail, "ini");
+
   return (
     <View
       style={{
         flex: 1,
-        marginTop: 10,
+        height: "auto",
+        marginTop: -80,
         marginHorizontal: 10,
       }}
     >
@@ -23,11 +36,12 @@ const DetailMovies = ({ detail }: DetailMoviesProps) => {
       >
         <Image
           source={{
-            uri: "https://image.tmdb.org/t/p/w500/" + detail?.backdrop_path,
+            uri: "https://image.tmdb.org/t/p/w500/" + detail?.poster_path,
           }}
           style={{
-            width: "60%",
-            aspectRatio: 10 / 10,
+            width: "100%",
+            height: "75%",
+            // aspectRatio: 10 / 10,
             borderRadius: 15,
           }}
           // resizeMode="cover"
@@ -35,35 +49,23 @@ const DetailMovies = ({ detail }: DetailMoviesProps) => {
       </View>
       <View
         style={{
-          marginTop: 10,
+          marginTop: -70,
         }}
       >
-        <Text className="font-black text-2xl" style={{ color: "white" }}>
-          Judul: {detail?.original_title}
-        </Text>
-        <View>
-          {detail.genres &&
-            detail?.genres.map((data: GenreDetails) => {
-              return (
-                <View
-                  key={data.id}
-                  style={{
-                    alignItems: "center",
-                    flexDirection: "row",
-                  }}
-                >
-                  <Text
-                    className="font-black text-xl"
-                    style={{ color: "white" }}
-                  >
-                    {data.name}
-                  </Text>
-                </View>
-              );
-            })}
+        <View className="flex-row justify-between">
+          <Text className="font-black text-xl" style={{ color: "#000" }}>
+            Rate: {detail.vote_average}
+          </Text>
+          <Pressable onPress={() => mutate(detail.id)}>
+            {tekan ? (
+              <AntDesign name="like1" size={24} color="black" />
+            ) : (
+              <AntDesign name="like2" size={24} color="black" />
+            )}
+          </Pressable>
         </View>
-        <Text className="font-black text-xl" style={{ color: "white" }}>
-          Rate: {detail.vote_average}
+        <Text className="font-semibold text-base" style={{ color: "#000" }}>
+          Rate: {detail.overview}
         </Text>
       </View>
     </View>

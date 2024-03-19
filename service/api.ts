@@ -3,8 +3,8 @@
 import axios from "axios";
 import { Alert } from "react-native";
 
-const instanceTopRated = axios.create({
-  baseURL: `https://api.themoviedb.org/3/movie/`,
+export const instanceTopRated = axios.create({
+  baseURL: `https://api.themoviedb.org/3/`,
   timeout: 1000,
   headers: {
     accept: "application/json",
@@ -16,7 +16,7 @@ const instanceTopRated = axios.create({
 export const topRated = async () => {
   try {
     const response = await instanceTopRated.get(
-      "top_rated?language=en-US&page=1"
+      "movie/top_rated?language=en-US&page=1"
     );
 
     return response.data.results;
@@ -27,7 +27,7 @@ export const topRated = async () => {
 
 export const detailsMovie = async (id: string) => {
   try {
-    const response = await instanceTopRated.get(`${id}?language=en-US'`);
+    const response = await instanceTopRated.get(`movie/${id}?language=en-US'`);
 
     return response.data;
   } catch (error: any) {

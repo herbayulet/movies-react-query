@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useDetailMovie } from "@/func/useDetailsMovie";
 import { GenreDetails } from "@/components/common";
 import DetailMovies from "@/components/DetailMovies";
@@ -8,7 +8,8 @@ import DetailMovies from "@/components/DetailMovies";
 const MovieDetails = () => {
   const { id } = useLocalSearchParams();
 
-  const { detailsFilm, error, isLoading } = useDetailMovie(id);
+  const { detailsFilm, error, isLoading, tekan, setTekan, mutate } =
+    useDetailMovie(id);
 
   if (isLoading) {
     return <ActivityIndicator />;
@@ -18,7 +19,19 @@ const MovieDetails = () => {
     return <Text>Tidak ada data</Text>;
   }
 
-  return <DetailMovies detail={detailsFilm} />;
+  return (
+    <>
+      <Stack.Screen
+        options={{ headerTitle: detailsFilm.title, headerTitleAlign: "center" }}
+      />
+      <DetailMovies
+        detail={detailsFilm}
+        tekan={tekan}
+        setTekan={setTekan}
+        mutate={mutate}
+      />
+    </>
+  );
 };
 
 const styles = StyleSheet.create({

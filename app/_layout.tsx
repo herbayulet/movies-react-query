@@ -7,6 +7,9 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 
+import { useReactQueryDevTools } from "@dev-plugins/react-query";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -46,17 +49,20 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const queryClient = new QueryClient();
+  useReactQueryDevTools(queryClient);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerTitle: "Movies",
-        }}
-      >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <StatusBar style="dark" />
+        <Stack
+          screenOptions={{
+            headerTitle: "Movies",
+          }}
+        >
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
